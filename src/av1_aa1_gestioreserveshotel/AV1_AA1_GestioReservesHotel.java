@@ -135,6 +135,8 @@ public class AV1_AA1_GestioReservesHotel {
         System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "? per nit");
         System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "? per nit");
         System.out.println("- Deluxe(" + disponibilitat.get("Deluxe") + " disponibles) - " + PREU_HAB.get("Deluxe") + "? per nit");
+        // seleccionar el tipus d'habitació
+        System.out.print("Introdueix el tipus d'habitació que vols reservar: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
         String tipus = seleccionarTipusHabitacio();
         // retornar només si hi ha habitacio disponible del tipus seleccionat
         if (disponibilitat.get(tipus) != 0) {
@@ -147,8 +149,7 @@ public class AV1_AA1_GestioReservesHotel {
     static String seleccionarTipusHabitacio() {
         int tipus = 0;
         String habitacio = null;
-        while (tipus < 1 || tipus > 3) {
-            System.out.print("Introdueix el tipus d'habitació que vols reservar: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
+        while (tipus < 1 || tipus > 3) {            
             tipus = scan.nextInt();
             switch (tipus) {
                 case 1:
@@ -162,9 +163,9 @@ public class AV1_AA1_GestioReservesHotel {
                     break;
                 default:
                     System.out.println("Error! Tipus no vàlid");
+                    System.out.print("Introdueix el tipus d'habitació: ");
                     break;
             }
-            System.out.println();
         }
         return habitacio;
     }
@@ -304,7 +305,23 @@ public class AV1_AA1_GestioReservesHotel {
             System.out.println("   -> " + reserves.get(codi).get(i));
         }
     }
-  
+
+    static void obtindreReservaPerTipus() {
+        // obtindre el tipus d'habitació
+        System.out.print("Introdueix un tipus d'habitació: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
+        String tipus = seleccionarTipusHabitacio();
+        // crear un Array amb els codis de les reserves
+        int codis[] = new int[reserves.size()];
+        int i = 0;
+        // per a cada codi en el HashMap reserves, introduir el codi en l'Array codis
+        for (int codi : reserves.keySet()) {
+            codis[i] = codi;
+            i++;
+        }
+        // llistar reserves per tipus
+        // llistarReservesPerTipus(codis, tipus);
+    }
+    
 }
 
 
