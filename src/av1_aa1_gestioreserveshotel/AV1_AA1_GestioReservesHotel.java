@@ -307,19 +307,43 @@ public class AV1_AA1_GestioReservesHotel {
     }
 
     static void obtindreReservaPerTipus() {
-        // obtindre el tipus d'habitació
-        System.out.print("Introdueix un tipus d'habitació: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
-        String tipus = seleccionarTipusHabitacio();
-        // crear un Array amb els codis de les reserves
-        int codis[] = new int[reserves.size()];
-        int i = 0;
-        // per a cada codi en el HashMap reserves, introduir el codi en l'Array codis
-        for (int codi : reserves.keySet()) {
-            codis[i] = codi;
-            i++;
+        // si existeixen reserves
+        if (!reserves.isEmpty()) {
+            // obtindre el tipus d'habitació
+            System.out.println();
+            System.out.print("Introdueix un tipus d'habitació: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
+            String tipus = seleccionarTipusHabitacio();
+            // crear un array amb els codis de les reserves
+            int codis[] = new int[reserves.size()];
+            // per a cada codi en el HashMap reserves, introduir-lo en l'array codis
+            int i = 0;
+            for (int codi : reserves.keySet()) {
+                codis[i] = codi;
+                i++;
+            }
+            // llistar reserves per tipus
+            llistarReservesPerTipus(codis, tipus);
+        } else {
+            System.out.println();
+            System.out.println("Error! Actualment l'hotel no té reserves.");
         }
-        // llistar reserves per tipus
-        // llistarReservesPerTipus(codis, tipus);
+    }
+    
+    static void llistarReservesPerTipus(int[] codis, String tipus) {
+        // si el tipus d'habitació de la reserva coincideix amb tipus, mostrar les dades de la reserva
+        if (reserves.get(codis[0]).get(0).equals(tipus)) {
+            mostrarDadesReserva(codis[0]);
+        }
+        // si queden codis de reserva en l'array
+        if (codis.length > 1) {
+            // crear un nou array de tamanay una unitat menor que codis
+            int newCodis[] = new int[codis.length-1];
+            // copiar codis en newCodis amb la posició 0 eliminada
+            System.arraycopy(codis, 1, newCodis, 0, newCodis.length);
+            // cridada recursiva a llistarReservesPerTipus amb newCodis
+            llistarReservesPerTipus(newCodis, tipus);
+        }
+        
     }
     
 }
