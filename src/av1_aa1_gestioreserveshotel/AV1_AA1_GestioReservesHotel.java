@@ -138,9 +138,9 @@ public class AV1_AA1_GestioReservesHotel {
         // mostrat disponibilitat
         System.out.println();
         System.out.println("Tipus d'habitació disponibles:");
-        System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "? per nit");
-        System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "? per nit");
-        System.out.println("- Deluxe(" + disponibilitat.get("Deluxe") + " disponibles) - " + PREU_HAB.get("Deluxe") + "? per nit");
+        System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "€ per nit");
+        System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "€ per nit");
+        System.out.println("- Deluxe(" + disponibilitat.get("Deluxe") + " disponibles) - " + PREU_HAB.get("Deluxe") + "€ per nit");
         // seleccionar el tipus d'habitació
         System.out.print("Introdueix el tipus d'habitació que vols reservar: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
         String tipus = seleccionarTipusHabitacio();
@@ -307,10 +307,14 @@ public class AV1_AA1_GestioReservesHotel {
         System.out.println("Dades de la reserva:");
         System.out.println("- Codi de reserva: " + codi);
         System.out.println("- Tipus d'habitació: " + reserves.get(codi).get(0));
-        System.out.println("- Preu total: " + reserves.get(codi).get(1) + "?");
+        System.out.println("- Preu total: " + reserves.get(codi).get(1) + "€");
         System.out.println("- Serveis addicionals:");
-        for (int i = 2; i <= reserves.get(codi).size() - 1; i++) {
-            System.out.println("   -> " + reserves.get(codi).get(i));
+        if (reserves.get(codi).size() == 2) {
+            System.out.println("   -> No s'han contractat serveis addicionals");
+        } else {
+            for (int i = 2; i <= reserves.get(codi).size() - 1; i++) {
+                System.out.println("   -> " + reserves.get(codi).get(i));
+            }
         }
     }
 
