@@ -103,6 +103,12 @@ public class AV1_AA1_GestioReservesHotel {
     }
 
     static void reservarHabitacio() {
+        // comprobar que l'hotel té habitacions disponibles
+        if (disponibilitat.get("Estàndard") == 0 && disponibilitat.get("Suite") == 0 && disponibilitat.get("Deluxe") == 0) {
+            System.out.println();
+            System.out.println("Actualment l'hotel no té habitacions disponibles.");
+            return;
+        }
         // seleccionar el tipus d'habitació
         String tipus = seleccionarTipusHabitacioDisponible();
         // seleccionar serveis addicionals
@@ -139,11 +145,12 @@ public class AV1_AA1_GestioReservesHotel {
         System.out.print("Introdueix el tipus d'habitació que vols reservar: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
         String tipus = seleccionarTipusHabitacio();
         // retornar només si hi ha habitacio disponible del tipus seleccionat
-        if (disponibilitat.get(tipus) != 0) {
-            return tipus;
-        } else {
-            return null;
-        }
+        while (disponibilitat.get(tipus) == 0) {
+            System.out.println("Actualment l'hotel no té habitacions disponibles del tipus seleccionat.");
+            System.out.print("Seleccione un altre tipus d'habitació: ");
+            tipus = seleccionarTipusHabitacio();
+        } 
+        return tipus;
     }
     
     static String seleccionarTipusHabitacio() {
@@ -172,6 +179,7 @@ public class AV1_AA1_GestioReservesHotel {
     
     static ArrayList<String> seleccionarServeis() {
         ArrayList<String> serveis = new ArrayList<>();
+        System.out.println();
         System.out.println("Selecciona un servei addicional: ");
         System.out.println("1(Esmorzar - 10?), 2(Gimnàs - 15?), 3(Spa - 20?), 4(Piscina - 25?) o 0(Finalitzar)");
         int opcio;
