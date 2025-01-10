@@ -246,32 +246,42 @@ public class AV1_AA1_GestioReservesHotel {
     
     static int generarCodiReserva() {
         int codi;
+	// generar un codi aleatori entre 100 i 999, comprobant que el codi no existeix
         do {
             codi = 100 + (int) (Math.random() * 900);
         } while (reserves.containsKey(codi));
+	// retornar el codi
         return codi;        
     }
 
     static void alliberarHabitacio() {
-        int codi;
-        String tipus;
-        // comprobar que la reserva existeix
-        System.out.println();
-        do {
-            System.out.print("Introdueix el codi de reserva per alliberar l'habitació: ");
-            codi = scan.nextInt();
-            if (!reserves.containsKey(codi)) {
-                System.out.println("Error! El codi de reserva no existeix.");
-            }
-        } while (!reserves.containsKey(codi));
-        // obtindre el tipus d'habitació
-        tipus = reserves.get(codi).get(0);
-        // actualitzar la disponibilitat del tipus d'habitació corresponent
-        disponibilitat.put(tipus, disponibilitat.get(tipus) + 1);
-        // eliminar la reserva
-        reserves.remove(codi);
-        // mostrar missatge
-        System.out.println("Reserva alliberada correctament.");
+        // si existeixen reserves
+        if (!reserves.isEmpty()) {
+            int codi;
+            String tipus;
+            // demanar el codi de reserva, comprobant que la reserva existeix
+            System.out.println();
+            do {
+                System.out.print("Introdueix el codi de reserva per alliberar l'habitació: ");
+                codi = scan.nextInt();
+                if (!reserves.containsKey(codi)) {
+                    System.out.println("Error! El codi de reserva no existeix.");
+                }
+            } while (!reserves.containsKey(codi));
+            // obtindre l'ArrayList amb la informació de la reserva
+            ArrayList<String> info = reserves.get(codi);
+            // obtindre el tipus d'habitació (posició 0 de l'ArrayList)
+            tipus = info.get(0);
+            // actualitzar la disponibilitat del tipus d'habitació corresponent
+            disponibilitat.put(tipus, disponibilitat.get(tipus) + 1);
+            // eliminar la reserva
+            reserves.remove(codi);
+            // mostrar missatge
+            System.out.println("Reserva alliberada correctament.");
+        } else {
+            System.out.println();
+            System.out.println("Error! Actualment l'hotel no té reserves.");
+        }
     }
     
     static void consultarDisponibilitat() {
