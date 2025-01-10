@@ -181,55 +181,50 @@ public class AV1_AA1_GestioReservesHotel {
         return habitacio;
     }
     
-    static ArrayList<String> seleccionarServeis() {
+    static ArrayList<String> seleccionarServeis() {    
+	// crear l'ArrayList per guardar els serveis
         ArrayList<String> serveis = new ArrayList<>();
+	// oferir els serveis
         System.out.println();
         System.out.println("Selecciona un servei addicional: ");
         System.out.println("1(Esmorzar - 10?), 2(Gimnàs - 15?), 3(Spa - 20?), 4(Piscina - 25?) o 0(Finalitzar)");
+	// llegir serveis fins que l'usuari finalitze el procés
         int opcio;
-        boolean ok = false; // opció vàlida
-        boolean sortir = false;
         String servei = null;
-        while (!sortir) {
+        do { 
             System.out.print("Introdueix el servei: ");
             opcio = scan.nextInt();
             switch (opcio) {
                 case 0:
-                    sortir = true;
-                    ok = true;
+		    System.out.println("S'ha finalitzat la introducció de serveis addicionals.");
                     break;
                 case 1: 
                     servei = "Esmorzar"; 
-                    ok = true;
                     break;
                 case 2:
                     servei = "Gimnàs"; 
-                    ok = true;
                     break;
                 case 3:
                     servei = "Spa"; 
-                    ok = true;
                     break;
                 case 4:
                     servei = "Piscina"; 
-                    ok = true;
                     break;
                 default:
                     System.out.println("Error! Opció no vàlida.");
-                    ok = false;
                     break;
-            }
-            // si la opció és vàlida
-            if (ok && !sortir) {
-                // afegir el servei
+	    }
+	    // si la opcio es vàlida (1-4)
+            if (opcio >=1 && opcio <= 4) {
+                // introduir el servei en l'ArrayList serveis, comprobant que encara no s'habia introduït
                 if (!serveis.contains(servei)) {
                     serveis.add(servei);                        
                 } else {
                     System.out.println("Ja has afegit " + servei + ".");
                 }
             }
-        }
-        System.out.println("S'ha finalitzat la introducció de serveis addicionals.");
+        } while (opcio != 0);
+	// retornar l'ArrayList amb els serveis
         return serveis;
     }
     
