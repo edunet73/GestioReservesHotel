@@ -285,44 +285,60 @@ public class AV1_AA1_GestioReservesHotel {
     }
     
     static void consultarDisponibilitat() {
-        int ds = disponibilitat.get("Suite");
-        int de = disponibilitat.get("Estàndard");
-        int dd = disponibilitat.get("Deluxe");
+	// obtindre la disponibitat de cada tipus d'habitació (HashMap disponibilitat)
+        int dispSuite = disponibilitat.get("Suite");
+        int dispEst = disponibilitat.get("Estàndard");
+        int dispDeluxe = disponibilitat.get("Deluxe");
+	// mostrar la informació
         System.out.println();
         System.out.println("Disponibilitat d'habitacions: ");
-        System.out.println("- Suite: " + ds + " lliures, " + (CSUI - ds) + " ocupades");
-        System.out.println("- Estàndard: " + de + " lliures, " + (CEST - de) + " ocupades");
-        System.out.println("- Deluxe: " + dd + " lliures, " + (CDEL - dd) + " ocupades");
+        System.out.println("- Suite: " + dispSuite + " lliures, " + (CSUI - dispSuite) + " ocupades");
+        System.out.println("- Estàndard: " + dispEst + " lliures, " + (CEST - dispEst) + " ocupades");
+        System.out.println("- Deluxe: " + dispDeluxe + " lliures, " + (CDEL - dispDeluxe) + " ocupades");
     }
         
     static void obtindreReserva() {
-        int codi;
-        String tipus;
-        // comprobar que la reserva existeix
-        System.out.println();
-        do {
-            System.out.print("Introdueix el codi de reserva: ");
-            codi = scan.nextInt();
-            if (!reserves.containsKey(codi)) {
-                System.out.println("Error! El codi de reserva no existeix.");
-            }
-        } while (!reserves.containsKey(codi));
-        // mostrar la informació de la reserva
-        mostrarDadesReserva(codi);        
+        // si existeixen reserves
+        if (!reserves.isEmpty()) {
+            int codi;
+            String tipus;
+            // demanar el codi de reserva, comprobant que la reserva existeix
+            System.out.println();
+            do {
+                System.out.print("Introdueix el codi de reserva: ");
+                codi = scan.nextInt();
+                if (!reserves.containsKey(codi)) {
+                    System.out.println("Error! El codi de reserva no existeix.");
+                }
+            } while (!reserves.containsKey(codi));
+            // mostrar la informació de la reserva
+            mostrarDadesReserva(codi);
+        } else {
+            System.out.println();
+            System.out.println("Error! Actualment l'hotel no té reserves.");
+        }
     }
     
     static void mostrarDadesReserva(int codi) {
+        // obtindre l'ArrayList amb la informació de la reserva
+        ArrayList<String> info = reserves.get(codi);
+        // obtindre el tipus d'habitació (posició 0 de l'ArrayList)
+        String tipus = info.get(0);
+        // obtindre el preu de la reserva (posició 1 de l'ArrayList)
+        String preu = info.get(1);
         // mostrar la informació de la reserva
         System.out.println("Dades de la reserva:");
         System.out.println("- Codi de reserva: " + codi);
-        System.out.println("- Tipus d'habitació: " + reserves.get(codi).get(0));
-        System.out.println("- Preu total: " + reserves.get(codi).get(1) + "?");
+        System.out.println("- Tipus d'habitació: " + tipus);
+        System.out.println("- Preu total: " + preu + "?");
         System.out.println("- Serveis addicionals:");
-        if (reserves.get(codi).size() == 2) {
+        // si l'ArrayList info només conté 2 elements significa que no s'han contractat serveis
+        if (info.size() == 2) {
             System.out.println("   -> No s'han contractat serveis addicionals");
         } else {
-            for (int i = 2; i <= reserves.get(codi).size() - 1; i++) {
-                System.out.println("   -> " + reserves.get(codi).get(i));
+            // si conté mes de 2 elements, iterar a partir de la posició 2 fins l'última per mostrar els serveis
+            for (int i = 2; i <= info.size()-1; i++) {
+                System.out.println("   -> " + info.get(i));
             }
         }
     }
@@ -334,16 +350,22 @@ public class AV1_AA1_GestioReservesHotel {
             System.out.println();
             System.out.print("Introdueix un tipus d'habitació: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
             String tipus = seleccionarTipusHabitacio();
-            // crear un array amb els codis de les reserves
-            int codis[] = new int[reserves.size()];
-            // per a cada codi en el HashMap reserves, introduir-lo en l'array codis
-            int i = 0;
-            for (int codi : reserves.keySet()) {
-                codis[i] = codi;
-                i++;
+            // si la disponibilitat del tipus seleccionat és menor que la capacitat, tenim reserves d'eixe tipus
+            if (disponibilitat.get(tipus) < CAPACITAT.get(tipus)) {
+                // crear un array amb els codis de les reserves
+                int codis[] = new int[reserves.size()];
+                // per a cada codi en el HashMap reserves, introduir-lo en l'array codis
+                int i = 0;
+                for (int codi : reserves.keySet()) {
+                    codis[i] = codi;
+                    i++;
+                }
+                // llistar reserves per tipus
+                llistarReservesPerTipus(codis, tipus);
+            } else {
+                System.out.println();
+                System.out.println("Error! Actualment l'hotel no té reserves del tipus d'habitació " + tipus + ".");
             }
-            // llistar reserves per tipus
-            llistarReservesPerTipus(codis, tipus);
         } else {
             System.out.println();
             System.out.println("Error! Actualment l'hotel no té reserves.");
