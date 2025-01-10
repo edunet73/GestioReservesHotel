@@ -27,7 +27,7 @@ public class AV1_AA1_GestioReservesHotel {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {        
+        public static void main(String[] args) {        
         // inicialitzar els hashmaps
         inicialitzarPreus();
         // gestió del menú
@@ -50,14 +50,14 @@ public class AV1_AA1_GestioReservesHotel {
         CAPACITAT.put("Suite", CSUI);
         CAPACITAT.put("Deluxe", CDEL);
         // preu de les habitacions
-        PREU_HAB.put("Estàndard", 50f);
-        PREU_HAB.put("Suite", 100f);
-        PREU_HAB.put("Deluxe", 150f);
+        PREU_HAB.put("Estàndard", (float) 50);
+        PREU_HAB.put("Suite", (float) 100);
+        PREU_HAB.put("Deluxe", (float) 150);
         // preu dels serveis addicionals
-        PREU_SERV.put("Esmorzar", 10f);
-        PREU_SERV.put("Gimnàs", 15f);
-        PREU_SERV.put("Spa", 20f);
-        PREU_SERV.put("Piscina", 25f);
+        PREU_SERV.put("Esmorzar", (float) 10);
+        PREU_SERV.put("Gimnàs", (float) 15);
+        PREU_SERV.put("Spa", (float) 20);
+        PREU_SERV.put("Piscina", (float) 25);
         // diponibilitats inicials
         disponibilitat.put("Estàndard", CAPACITAT.get("Estàndard"));
         disponibilitat.put("Suite", CAPACITAT.get("Suite"));
@@ -99,8 +99,7 @@ public class AV1_AA1_GestioReservesHotel {
                 System.out.println("Error! Opció no vàlida.");
                 break;
         }
-        //System.out.println();
-    }
+}
 
     static void reservarHabitacio() {
         // comprobar que l'hotel té habitacions disponibles
@@ -119,11 +118,16 @@ public class AV1_AA1_GestioReservesHotel {
         int codi = generarCodiReserva();
         // crear un ArrayList amb la informació de la reserva
         ArrayList<String> infoReserva = new ArrayList<>();
+        // afegir el tipus d'habitació en la posició 0 de l'ArrayList infoReserva
         infoReserva.add(tipus);
-        infoReserva.add(Float.toString(preu));
-        for (String servei : serveis) {
-            infoReserva.add(servei);
-        }
+        // afegir el preu de la reserva en la posició 1 de infoReserva
+        infoReserva.add("" + preu);
+        // afegir els serveis (si s'han contractac) en les posicions 2 a 5 de infoReserva
+	if (!serveis.isEmpty()) {    
+            for (String servei : serveis) {
+                infoReserva.add(servei);
+            }
+	}
         // introduir la reserva en el HashMap reserves
         reserves.put(codi, infoReserva);
         // actualitzar disponibilitat del tipus d'habitació
@@ -138,9 +142,9 @@ public class AV1_AA1_GestioReservesHotel {
         // mostrat disponibilitat
         System.out.println();
         System.out.println("Tipus d'habitació disponibles:");
-        System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "€ per nit");
-        System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "€ per nit");
-        System.out.println("- Deluxe(" + disponibilitat.get("Deluxe") + " disponibles) - " + PREU_HAB.get("Deluxe") + "€ per nit");
+        System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "? per nit");
+        System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "? per nit");
+        System.out.println("- Deluxe(" + disponibilitat.get("Deluxe") + " disponibles) - " + PREU_HAB.get("Deluxe") + "? per nit");
         // seleccionar el tipus d'habitació
         System.out.print("Introdueix el tipus d'habitació que vols reservar: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
         String tipus = seleccionarTipusHabitacio();
@@ -307,7 +311,7 @@ public class AV1_AA1_GestioReservesHotel {
         System.out.println("Dades de la reserva:");
         System.out.println("- Codi de reserva: " + codi);
         System.out.println("- Tipus d'habitació: " + reserves.get(codi).get(0));
-        System.out.println("- Preu total: " + reserves.get(codi).get(1) + "€");
+        System.out.println("- Preu total: " + reserves.get(codi).get(1) + "?");
         System.out.println("- Serveis addicionals:");
         if (reserves.get(codi).size() == 2) {
             System.out.println("   -> No s'han contractat serveis addicionals");
