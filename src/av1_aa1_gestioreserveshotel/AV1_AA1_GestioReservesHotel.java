@@ -25,7 +25,8 @@ public class AV1_AA1_GestioReservesHotel {
     static HashMap<Integer, ArrayList<String>> reserves = new HashMap<>(); // reserves
     
     /**
-     * @param args the command line arguments
+     * Controla en un bucle l'aparició del menú, la gestió de
+     * l'opció triada per l'usuari i la finalització del programa
      */
         public static void main(String[] args) {        
         // inicialitzar els HashMaps
@@ -40,7 +41,7 @@ public class AV1_AA1_GestioReservesHotel {
             if (opcio == 6) {
                 sortir = true;
             }
-            System.out.println();
+            System.out.println(); // línea de separació amb l'eixida anterior
         }
     }
     
@@ -104,6 +105,7 @@ public class AV1_AA1_GestioReservesHotel {
                 obtindreReservaPerTipus();
                 break;
             case 6:
+                System.out.println(); // línea de separació amb l'eixida anterior
                 System.out.println("Sortint del sistema de reserves.");
                 break;
             default:
@@ -120,7 +122,7 @@ public class AV1_AA1_GestioReservesHotel {
     static void reservarHabitacio() {
         // si l'hotel no té habitacions disponibles, informar de la situació i tornar al menú
         if (disponibilitat.get("Estàndard") == 0 && disponibilitat.get("Suite") == 0 && disponibilitat.get("Deluxe") == 0) {
-            System.out.println();
+            System.out.println(); // línea de separació
             System.out.println("Actualment l'hotel no té habitacions disponibles.");
             return;
         }
@@ -128,7 +130,7 @@ public class AV1_AA1_GestioReservesHotel {
         String tipus = seleccionarTipusHabitacioDisponible();
         // si no queden habitacions disponibles del tipus seleccionat, informar de la situació i tornar al menú
         if (tipus == null) {
-            System.out.println();
+            System.out.println(); // línea de separació
             System.out.println("Actualment l'hotel no té habitacions disponibles del tipus seleccionat.");
             return;
         } 
@@ -162,12 +164,12 @@ public class AV1_AA1_GestioReservesHotel {
     
     /**
      * Mostra la disponibilitat dels tipus d'habitacions i crida a seleccionarTipusHabitacio() 
-     * Si del tipus d'habitació seleccionat queden habitacions disponibles, el retorna
+     * Si del tipus d'habitació seleccionat queden habitacions disponibles, retorna el tipus d'habitació
      * En cas contrari, retorna null
      */
     static String seleccionarTipusHabitacioDisponible() {
         // mostrat disponibilitat
-        System.out.println();
+        System.out.println(); // línea de separació
         System.out.println("Tipus d'habitació disponibles:");
         System.out.println("- Suite (" + disponibilitat.get("Suite") + " disponibles) - " + PREU_HAB.get("Suite") + "? per nit");
         System.out.println("- Estàndard (" + disponibilitat.get("Estàndard") + " disponibles) - " + PREU_HAB.get("Estàndard") + "? per nit");
@@ -220,10 +222,10 @@ public class AV1_AA1_GestioReservesHotel {
 	// crear l'ArrayList per a guardar els serveis
         ArrayList<String> serveis = new ArrayList<>();
 	// oferir els serveis
-        System.out.println();
+        System.out.println(); // línea de separació
         System.out.println("Selecciona un servei addicional: ");
         System.out.println("1(Esmorzar - 10?), 2(Gimnàs - 15?), 3(Spa - 20?), 4(Piscina - 25?) o 0(Finalitzar)");
-	// llegir serveis fins que l'usuari finalitze el procés
+	// llegir serveis fins que l'usuari finalitze el procés (opció 0)
         int opcio;
         String servei = null;
         do { 
@@ -290,6 +292,8 @@ public class AV1_AA1_GestioReservesHotel {
     static int generarCodiReserva() {
         int codi;
 	// generar un codi aleatori entre 100 i 999, comprobant que el codi no existeix
+        // - amb Math.random() * 900 tinc un número entre 0 i 899
+        // - sumant-li 100 tinc un número entre 100 i 999
         do {
             codi = 100 + (int) (Math.random() * 900);
         } while (reserves.containsKey(codi));
@@ -312,7 +316,7 @@ public class AV1_AA1_GestioReservesHotel {
         String tipus;
         // demanar el codi de reserva
         System.out.println();
-        System.out.print("Introdueix el codi de reserva per alliberar l'habitació: ");
+        System.out.print("Introdueix el codi de reserva per a alliberar l'habitació: ");
         codi = scan.nextInt();
         // si el codi de reserva no existeix, informar de la situació i tornar al menú
         if (!reserves.containsKey(codi)) {
@@ -321,8 +325,8 @@ public class AV1_AA1_GestioReservesHotel {
         }
         // obtindre l'ArrayList amb la informació de la reserva
         ArrayList<String> info = reserves.get(codi);
-        // obtindre el tipus d'habitació (posició 0 de l'ArrayList)
-        tipus = info.get(0);
+        // obtindre el tipus d'habitació (posició 0 de l'ArrayList) 
+        tipus = info.get(0); // --> alternativa: tipus = reserves.get(codi).get(0); 
         // actualitzar la disponibilitat del tipus d'habitació corresponent
         disponibilitat.put(tipus, disponibilitat.get(tipus) + 1);
         // eliminar la reserva
@@ -332,7 +336,7 @@ public class AV1_AA1_GestioReservesHotel {
     }
     
     /**
-     * Mostra la disponibilitat actual de les habitacions (lliures iocupades)
+     * Mostra la disponibilitat actual de les habitacions (lliures i ocupades)
      */
     static void consultarDisponibilitat() {
 	// obtindre la disponibitat de cada tipus d'habitació (HashMap disponibilitat)
@@ -359,15 +363,15 @@ public class AV1_AA1_GestioReservesHotel {
             return;
         }
         int codi;
-        // demanar el codi de reserva, comprobant que la reserva existeix
-        System.out.println();
-        do {
-            System.out.print("Introdueix el codi de reserva: ");
-            codi = scan.nextInt();
-            if (!reserves.containsKey(codi)) {
-                System.out.println("Error! El codi de reserva no existeix.");
-            }
-        } while (!reserves.containsKey(codi));
+        // demanar el codi de reserva
+        System.out.println(); // línea de separació
+        System.out.print("Introdueix el codi de reserva: ");
+        codi = scan.nextInt();
+        // si el codi de reserva no existeix, informar de la situació i tornar al menú
+        if (!reserves.containsKey(codi)) {
+            System.out.println("Error! El codi de reserva no existeix.");
+            return;
+        }
         // mostrar la informació de la reserva
         mostrarDadesReserva(codi);
     }
@@ -384,17 +388,17 @@ public class AV1_AA1_GestioReservesHotel {
         String preu = infoReserva.get(1);
         // mostrar la informació de la reserva
         System.out.println("Dades de la reserva:");
-        System.out.println("- Codi de reserva: " + codi);
-        System.out.println("- Tipus d'habitació: " + tipus);
-        System.out.println("- Preu total: " + preu + "?");
+        System.out.println("- Codi de reserva: " + codi); 
+        System.out.println("- Tipus d'habitació: " + tipus); // --> alternativa: + reserves.get(codi).get(0)
+        System.out.println("- Preu total: " + preu + "?"); // --> alternativa: + reserves.get(codi).get(1)
         System.out.println("- Serveis addicionals:");
         // si l'ArrayList infoReserva només conté 2 elements significa que no s'han contractat serveis
-        if (infoReserva.size() == 2) {
+        if (infoReserva.size() == 2) { // --> alternativa: + reserves.get(codi).size() == 2
             System.out.println("   -> No s'han contractat serveis addicionals");
         } else {
-            // si conté mes de 2 elements, iterar a partir de la posició 2 fins l'última per mostrar els serveis
-            for (int i = 2; i <= infoReserva.size()-1; i++) {
-                System.out.println("   -> " + infoReserva.get(i));
+            // si conté mes de 2 elements, iterar a partir de la posició 2 fins l'última per a mostrar els serveis
+            for (int i = 2; i <= infoReserva.size()-1; i++) { // --> alternativa: <= reserves.get(codi).size()-1
+                System.out.println("   -> " + infoReserva.get(i)); // --> alternativa: + reserves.get(codi).geet(i)
             }
         }
     }
@@ -410,7 +414,7 @@ public class AV1_AA1_GestioReservesHotel {
             return;
         }
         // obtindre el tipus d'habitació
-        System.out.println();
+        System.out.println(); // línea de separació
         System.out.print("Introdueix un tipus d'habitació: 1 (Estàndard), 2 (Suite) o 3 (Deluxe): ");
         String tipus = seleccionarTipusHabitacio();
         // si la disponibilitat del tipus seleccionat és menor que la capacitat, tenim reserves d'eixe tipus
@@ -428,7 +432,7 @@ public class AV1_AA1_GestioReservesHotel {
             llistarReservesPerTipus(codis, tipus);
         } else {
             // si l'hotel no té reserves del tipus seleccionat, informar de la situació
-            System.out.println();
+            System.out.println(); // línea de separació
             System.out.println("Actualment l'hotel no té reserves del tipus d'habitació " + tipus + ".");
         }
     }
@@ -445,8 +449,8 @@ public class AV1_AA1_GestioReservesHotel {
         // obtindre el tipus d'habitació de la reserva (posició 0 de l'ArrayList)
         String tipusReserva = infoReserva.get(0);
         // si el tipus d'habitació de la reserva coincideix amb tipus, mostrar les dades de la reserva
-        if (tipusReserva.equals(tipus)) {
-            mostrarDadesReserva(codiReserva);
+        if (tipusReserva.equals(tipus)) { // --> alternativa: reserves.get(codis[0]).get(0).equals(tipus)
+            mostrarDadesReserva(codiReserva); // --> alternativa: reserves.get(codis[0])
         }
         // si queden mes codis de reserva en l'array (comprovació que evita que el mètode es cride a si mateix indefinidament)
         if (codis.length > 1) {
